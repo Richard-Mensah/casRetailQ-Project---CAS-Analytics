@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Plus, Search, Edit2, Trash2, AlertTriangle, Package } from 'lucide-react';
-import { useApp } from '../context/AppContext';
-import Modal from '../components/Modal';
-import { InventoryItem } from '../types';
+import { useApp } from './AppContext';
+import Modal from './Modal';
+import { InventoryItem } from './types';
 
 const categories = ['Beverages','Grains','Staples','Cooking','Proteins','Household','Other'];
 

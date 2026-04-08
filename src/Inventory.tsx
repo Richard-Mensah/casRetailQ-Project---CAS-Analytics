@@ -1,4 +1,4 @@
-import { Sale, Expense, InventoryItem, Supplier, Customer, Alert } from '../types';
+import { Sale, Expense, InventoryItem, Supplier, Customer, Alert } from './types';
 
 export const seedSales: Sale[] = [
   { id:'s1', date:'2024-04-01', product:'Milo 500g', category:'Beverages', qty:12, unitPrice:18, total:216, paymentMethod:'momo', customer:'Ama Owusu' },

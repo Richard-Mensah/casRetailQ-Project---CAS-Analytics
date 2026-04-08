@@ -4,7 +4,7 @@ import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell, Legend
 } from 'recharts';
-import { useApp } from '../context/AppContext';
+import { useApp } from './AppContext';
 
 const COLORS = ['#1D9E75','#185FA5','#BA7517','#D85A30','#9FE1CB','#9b5de5'];
 

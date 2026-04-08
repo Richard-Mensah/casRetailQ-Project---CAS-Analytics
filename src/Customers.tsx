@@ -8,7 +8,7 @@ import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis,
   Tooltip, ResponsiveContainer, PieChart, Pie, Cell
 } from 'recharts';
-import { useApp } from '../context/AppContext';
+import { useApp } from './AppContext';
 
 const COLORS = ['#1D9E75','#BA7517','#185FA5','#D85A30','#9FE1CB'];
 
