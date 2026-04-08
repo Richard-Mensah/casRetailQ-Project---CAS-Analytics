@@ -1,13 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+export default function Sales() {
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Sales</h2>
+      <p>This is the Sales page.</p>
+    </div>
+  );
+}

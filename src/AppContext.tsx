@@ -99,17 +99,3 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
-    expenses,
-    alerts,
-    businessProfile,
-    addCustomer,
-    addSupplier,
-    addInventoryItem,
-    addSale,
-    addExpense,
-    addAlert,
-    updateBusinessProfile,
-  };
-
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-};
