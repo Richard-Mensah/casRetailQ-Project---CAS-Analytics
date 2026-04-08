@@ -1,20 +1,52 @@
 import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Menu, Bell, Search } from 'lucide-react';
+import { useApp } from './AppContext';
 
-interface TopBarProps {
-  onMenuClick: () => void;
-}
+const pageTitles: Record<string, string> = {
+  '/': 'Dashboard', '/sales': 'Sales', '/inventory': 'Inventory',
+  '/reports': 'Reports & P&L', '/customers': 'Customers',
+  '/suppliers': 'Suppliers', '/alerts': 'Alerts', '/settings': 'Settings',
+};
+
+interface TopBarProps { onMenuClick: () => void; }
 
 export default function TopBar({ onMenuClick }: TopBarProps) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { alerts } = useApp();
+  const title = pageTitles[location.pathname] || 'RetailIQ';
+  const unreadAlerts = alerts.filter(a => a.type === 'warning' || a.type === 'error').length;
+
   return (
-    <header className="bg-white shadow-sm border-b">
-      <div className="flex items-center justify-between px-4 py-3">
-        <button onClick={onMenuClick} className="md:hidden">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+    <header className="bg-white border-b border-gray-100 px-4 lg:px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+      <div className="flex items-center gap-3">
+        <button onClick={onMenuClick} className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors">
+          <Menu size={20} className="text-gray-600" />
         </button>
-        <h1 className="text-xl font-semibold">RetailIQ</h1>
-        <div></div>
+        <div>
+          <h1 className="text-lg font-bold text-gray-900">{title}</h1>
+          <p className="text-xs text-gray-400 hidden sm:block">
+            {new Date().toLocaleDateString('en-GH', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100 w-48">
+          <Search size={14} className="text-gray-400" />
+          <input placeholder="Search..." className="bg-transparent text-sm outline-none w-full text-gray-600 placeholder-gray-400" />
+        </div>
+        <button onClick={() => navigate('/alerts')} className="relative p-2 rounded-xl hover:bg-gray-100 transition-colors">
+          <Bell size={20} className="text-gray-600" />
+          {unreadAlerts > 0 && (
+            <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+              {unreadAlerts > 9 ? '9+' : unreadAlerts}
+            </span>
+          )}
+        </button>
+        <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white ml-1" style={{ background: '#1D9E75' }}>
+          R
+        </div>
       </div>
     </header>
   );

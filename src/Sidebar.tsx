@@ -1,49 +1,88 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppProvider } from './context/AppContext';
-import Sidebar from './components/Sidebar';
-import TopBar from './components/TopBar';
-import Dashboard from './pages/Dashboard';
-import Sales from './pages/Sales';
-import Inventory from './pages/Inventory';
-import Reports from './pages/Reports';
-import Expenses from './pages/Expenses';
-import Customers from './pages/Customers';
-import Suppliers from './pages/Suppliers';
-import Alerts from './pages/Alerts';
-import Settings from './pages/Settings';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import {
+  LayoutDashboard,
+  ShoppingCart,
+  Package,
+  BarChart3,
+  DollarSign,
+  Users,
+  Truck,
+  AlertTriangle,
+  Settings,
+  X
+} from 'lucide-react';
 
-function Layout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#f8faf9' }}>
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-        <TopBar onMenuClick={() => setSidebarOpen(true)} />
-        <main className="flex-1 overflow-y-auto">
-          <Routes>
-            <Route path="/"           element={<Dashboard />} />
-            <Route path="/sales"      element={<Sales />} />
-            <Route path="/inventory"  element={<Inventory />} />
-            <Route path="/expenses"   element={<Expenses />} />
-            <Route path="/reports"    element={<Reports />} />
-            <Route path="/customers"  element={<Customers />} />
-            <Route path="/suppliers"  element={<Suppliers />} />
-            <Route path="/alerts"     element={<Alerts />} />
-            <Route path="/settings"   element={<Settings />} />
-          </Routes>
-        </main>
-      </div>
-    </div>
-  );
+interface SidebarProps {
+  open: boolean;
+  onClose: () => void;
 }
 
-export default function App() {
+const menuItems = [
+  { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
+  { path: '/sales', icon: ShoppingCart, label: 'Sales' },
+  { path: '/inventory', icon: Package, label: 'Inventory' },
+  { path: '/expenses', icon: DollarSign, label: 'Expenses' },
+  { path: '/reports', icon: BarChart3, label: 'Reports' },
+  { path: '/customers', icon: Users, label: 'Customers' },
+  { path: '/suppliers', icon: Truck, label: 'Suppliers' },
+  { path: '/alerts', icon: AlertTriangle, label: 'Alerts' },
+  { path: '/settings', icon: Settings, label: 'Settings' },
+];
+
+export default function Sidebar({ open, onClose }: SidebarProps) {
+  const location = useLocation();
+
   return (
-    <AppProvider>
-      <BrowserRouter>
-        <Layout />
-      </BrowserRouter>
-    </AppProvider>
+    <>
+      {/* Mobile overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`
+        fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
+        ${open ? 'translate-x-0' : '-translate-x-full'}
+        md:translate-x-0 md:static md:inset-0
+      `}>
+        <div className="flex items-center justify-between p-4 border-b">
+          <h1 className="text-xl font-bold text-gray-800">RetailIQ</h1>
+          <button
+            onClick={onClose}
+            className="md:hidden p-2 rounded-md hover:bg-gray-100"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <nav className="mt-4">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`
+                  flex items-center px-4 py-3 text-sm font-medium transition-colors
+                  ${isActive
+                    ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }
+                `}
+                onClick={() => window.innerWidth < 768 && onClose()}
+              >
+                <Icon size={18} className="mr-3" />
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+    </>
   );
 }
